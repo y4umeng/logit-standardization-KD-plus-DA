@@ -311,7 +311,7 @@ def main_worker(gpu, ngpus_per_node, opt):
     trainable_list.append(mlp)
 
     criterion_cls = nn.CrossEntropyLoss()
-    criterion_div = DistillKL() if opt.logit_stand else DistillKL_logit_stand()
+    criterion_div = DistillKL_logit_stand() if opt.logit_stand else DistillKL()
     if opt.distill == 'kd':
         criterion_kd = DistillKL()
     elif opt.distill == 'crd':
