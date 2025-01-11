@@ -1,0 +1,64 @@
+EXPERIMENT:
+  NAME: "MLKD + logit stand + DA,res32x4,res8x4"
+  TAG: "MLKD,res32x4,res8x4"
+  PROJECT: "logit_stand"
+  # LOGIT_STAND: True
+  # DA: True
+DISTILLER:
+  TYPE: "MLKD"
+  TEACHER: "resnet32x4"
+  STUDENT: "resnet8x4"
+LOG:
+  WANDB: False
+SOLVER:
+  BATCH_SIZE: 64
+  EPOCHS: 480
+  LR: 0.025
+  LR_DECAY_STAGES: [150, 180, 210]
+  LR_DECAY_RATE: 0.1
+  WEIGHT_DECAY: 0.0005
+  MOMENTUM: 0.9
+  TYPE: "SGD"
+  TRAINER: "ours"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

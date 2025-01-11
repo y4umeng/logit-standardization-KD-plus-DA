@@ -100,6 +100,7 @@ if __name__ == "__main__":
     parser.add_argument("--cfg", type=str, default="")
     parser.add_argument("--resume", action="store_true")
     parser.add_argument("--logit-stand", action="store_true")
+    parser.add_argument("--da", action="store_true")
     parser.add_argument("--base-temp", type=float, default=2)
     parser.add_argument("--kd-weight", type=float, default=9)
     parser.add_argument("opts", default=None, nargs=argparse.REMAINDER)
@@ -107,6 +108,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     cfg.merge_from_file(args.cfg)
     cfg.merge_from_list(args.opts)
+    cfg.EXPERIMENT.DA = args.da
     if args.logit_stand and cfg.DISTILLER.TYPE in ['KD','DKD','MLKD']:
         cfg.EXPERIMENT.LOGIT_STAND = True
         if cfg.DISTILLER.TYPE == 'KD':

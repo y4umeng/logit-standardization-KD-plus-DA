@@ -89,12 +89,35 @@ def mixup_data_conf(x, y, lam, use_cuda=True):
 class MLKD(Distiller):
     def __init__(self, student, teacher, cfg):
         super(MLKD, self).__init__(student, teacher)
+        self.cfg = cfg
         self.temperature = cfg.KD.TEMPERATURE
         self.ce_loss_weight = cfg.KD.LOSS.CE_WEIGHT
         self.kd_loss_weight = cfg.KD.LOSS.KD_WEIGHT
         self.logit_stand = cfg.EXPERIMENT.LOGIT_STAND 
 
+    def disagreement_augmentation (self, images):
+        images.requires_grad_(True)
+        optimizer = torch.optim.Adam([images], lr=self.cfg.DA.LR)
+        for epoch in range(self.cfg.DA.EPOCHS):
+            logits_student, _ = self.student(images)
+            logits_teacher, _ = self.teacher(images)
+            loss = -1 * kd_loss(
+                        logits_student, 
+                        logits_teacher, 
+                        self.temperature, 
+                        logit_stand=self.logit_stand
+                    )
+            images.grad = torch.autograd.grad(loss, images)[0]
+            optimizer.step()
+            optimizer.zero_grad()
+        images.requires_grad_(False)
+        return images
+
     def forward_train(self, image_weak, image_strong, target, **kwargs):
+        if self.cfg.EXPERIMENT.DA and torch.rand(1)[0] < self.cfg.DA.PROB:
+            image_strong = self.disagreement_augmentation(image_strong)
+        if self.cfg.EXPERIMENT.DA and torch.rand(1)[0] < self.cfg.DA.PROB:
+            image_weak = self.disagreement_augmentation(image_weak)
         logits_student_weak, _ = self.student(image_weak)
         logits_student_strong, _ = self.student(image_strong)
         with torch.no_grad():

@@ -9,6 +9,7 @@ def show_cfg(cfg):
     dump_cfg.DISTILLER = cfg.DISTILLER
     dump_cfg.SOLVER = cfg.SOLVER
     dump_cfg.LOG = cfg.LOG
+    dump_cfg.DA = cfg.DA
     if cfg.DISTILLER.TYPE in cfg:
         dump_cfg.update({cfg.DISTILLER.TYPE: cfg.get(cfg.DISTILLER.TYPE)})
     print(log_msg("CONFIG:\n{}".format(dump_cfg.dump()), "INFO"))
@@ -21,7 +22,8 @@ CFG.EXPERIMENT = CN()
 CFG.EXPERIMENT.PROJECT = "distill"
 CFG.EXPERIMENT.NAME = ""
 CFG.EXPERIMENT.TAG = "default"
-CFG.EXPERIMENT.LOGIT_STAND = False
+CFG.EXPERIMENT.LOGIT_STAND = True
+CFG.EXPERIMENT.DA = False
 
 # Dataset
 CFG.DATASET = CN()
@@ -53,7 +55,7 @@ CFG.LOG = CN()
 CFG.LOG.TENSORBOARD_FREQ = 500
 CFG.LOG.SAVE_CHECKPOINT_FREQ = 40
 CFG.LOG.PREFIX = "./output"
-CFG.LOG.WANDB = False
+CFG.LOG.WANDB = True
 
 # Distillation Methods
 
@@ -166,3 +168,9 @@ CFG.DKD.ALPHA = 1.0
 CFG.DKD.BETA = 8.0
 CFG.DKD.T = 4.0
 CFG.DKD.WARMUP = 20
+
+# DA (Disagreement Augmentation) CFG
+CFG.DA = CN()
+CFG.DA.LR = 0.01778
+CFG.DA.EPOCHS = 1
+CFG.DA.PROB = 0.7374
