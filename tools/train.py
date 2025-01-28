@@ -122,4 +122,5 @@ if __name__ == "__main__":
             cfg.KD.LOSS.KD_WEIGHT = args.kd_weight
             cfg.KD.TEMPERATURE = args.base_temp
     cfg.freeze()
+    print(f"LOGIT STAND: {cfg.EXPERIMENT.LOGIT_STAND}")
     main(cfg, args.resume, args.opts)
