@@ -176,6 +176,7 @@ class BaseTrainer(object):
 
         # backward
         loss = sum([l.mean() for l in losses_dict.values()])
+        # print(loss)
         loss.backward()
         self.optimizer.step()
         train_meters["training_time"].update(time.time() - train_start_time)
